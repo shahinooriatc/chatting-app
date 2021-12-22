@@ -8,7 +8,6 @@ import {
 import { getDatabase, ref, set } from "firebase/database";
 
 
-
 const firebaseConfig = {
     apiKey: "AIzaSyBZxbPtcV4ZM8kjvYqLHDhel-usqPjyUAk",
     authDomain: "first-chatting-app-dee38.firebaseapp.com",

@@ -1,11 +1,9 @@
+import { signOut, auth } from '../../../firebaseConfig';
 import React, { Component } from 'react'
-import { auth, signOut } from "../../firebaseConfig";
+import { Header} from 'semantic-ui-react';
 
-export default class Header extends Component {
-
+export default class LogOut extends Component {
     handleLogOut = () => {
-
-        
         signOut(auth).then(() => {
             console.log('Sign-out successful.');
         }).catch((error) => {
@@ -15,9 +13,9 @@ export default class Header extends Component {
 
     render() {
         return (
-            <div>
-                <button onClick={this.handleLogOut}>LogOut</button>
-            </div>
+            <Header as='h3' style={{color:'red'}}>
+                <p onClick={this.handleLogOut}>LogOut</p>
+            </Header>
         )
     }
 }

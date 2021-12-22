@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route,Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./Auth/Login/Login";
 import Register from "./Auth/Register/Register";
 import Home from './Home/Home';
@@ -28,22 +28,16 @@ export default class App extends Component {
         {this.state.loggedIn ?
           <Routes>
             <Route exact path="/" element={<Home />} />
-            {/* <Route  path="/" element={<Header />} /> */}
             <Route path="/login" element={<Navigate to="/" />} />
             <Route path="/register" element={<Navigate to="/" />} />
-
           </Routes>
           :
           <Routes>
-            
-            {/* <Route exact path="/" element={<Header />} /> */}
             <Route exact path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-
           </Routes>
         }
-
 
       </Router>
     )
