@@ -4,12 +4,14 @@ import LogOut from '../Auth/LogOut/LogOut'
 
 export default class UserPanel extends Component {
     Dropdown = () => [
-        { text: <span >Shahinoor Alam</span>, disabled: true },
+        { text: <span >{this.props.user.email}</span>, disabled: true },
         { text: <span>Profile Setting</span> },
         { text: <span><LogOut /></span> } //import logout component for dropdown menu logout
     ]
 
     render() {
+        const {displayName,email} =this.props.user;
+       
         return (
             <Grid>
                 <Grid.Column>
@@ -20,7 +22,7 @@ export default class UserPanel extends Component {
                     </Grid.Row>
                     <Header as='h2' icon textAlign='center'>
                         <Dropdown trigger={<span style={{ backgroundColor: '#ddd5d5', borderRadius: '25px', padding: '20px' }}
-                        >Logged User</span>} options={this.Dropdown()} />
+                        >{displayName}</span>} options={this.Dropdown()} />
                     </Header>
                 </Grid.Column>
             </Grid>

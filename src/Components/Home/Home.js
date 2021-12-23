@@ -10,10 +10,10 @@ import Messages from './../Messages/Messages';
 
 
 class Home extends Component {
-
     componentDidMount() {
         console.log(this.props.isLoading);
         onAuthStateChanged(auth, (user) => {
+            
             if (user) {
                 this.props.setUser(user)
             } else {
@@ -22,7 +22,7 @@ class Home extends Component {
         });
     }
     render() {
-
+        
         return (this.props.isLoading ?
             (<Segment style={{ height: '100vh' }}>
                 <Dimmer active>
@@ -33,7 +33,7 @@ class Home extends Component {
             :
             (<Grid columns={4} style={{ height: '100vh' }} divided>
                 <Grid.Column width={2} style={{ backgroundColor: '#64A5D3' }}>
-                    <SideBar />
+                    <SideBar user={this.props.userName} />
                 </Grid.Column>
 
                 <Grid.Column width={2} style={{ backgroundColor: '#6276B5' }}>
@@ -54,7 +54,8 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    isLoading: state.user.isLoading
+    isLoading: state.user.isLoading,
+    userName: state.user.currentUser
 })
 //React & redux connect with this line, And set User, clear user operation work for Home component//
 export default connect(mapStateToProps, { setUser, clearUser })(Home)

@@ -34,8 +34,6 @@ export default class Login extends Component {
             signInWithEmailAndPassword(auth, this.state.email, this.state.password)
                 .then((userCredential) => {
                     const user = userCredential.user;
-                    // ...
-                    console.log(user);
                     this.setState({ loader: false })
                     this.setState({ errorMsg: "" })
                 })

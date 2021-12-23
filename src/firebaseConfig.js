@@ -5,7 +5,7 @@ import {
     updateProfile, signInWithEmailAndPassword,
     onAuthStateChanged, signOut
 } from "firebase/auth";
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, set, ref, push } from "firebase/database";
 
 
 const firebaseConfig = {
@@ -27,5 +27,5 @@ export {
     auth, createUserWithEmailAndPassword,
     updateProfile, db, ref, set,
     signInWithEmailAndPassword,
-    onAuthStateChanged, signOut
+    onAuthStateChanged, signOut,push,getDatabase
 }
