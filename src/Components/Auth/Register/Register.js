@@ -78,7 +78,7 @@ export default class Register extends Component {
     }
 
 
-    // Write date to realtime Database after line 
+    // Write date to realtime Database after line no 52
     writeUserData = (user) => {
         set(ref(db, 'users/' + user.user.uid), {
             username: this.state.userName,

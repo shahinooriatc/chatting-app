@@ -11,7 +11,6 @@ import Messages from './../Messages/Messages';
 
 class Home extends Component {
     componentDidMount() {
-        console.log(this.props.isLoading);
         onAuthStateChanged(auth, (user) => {
             
             if (user) {

@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { Button, Header, Icon, Modal, Form, Message } from 'semantic-ui-react'
-import { getDatabase, set, ref, push } from '../../../firebaseConfig';
+import { Button, Header, Icon, Modal, Form, Message, Menu } from 'semantic-ui-react'
+import { getDatabase, set, ref, push, onValue } from '../../../firebaseConfig';
+import { connect } from 'react-redux';
+import { setCurrentGroup } from '../../../Action/IndexAction';
 
 
-export default class Group extends Component {
+class Group extends Component {
     //initial State for modal...
     state = {
         group: [],
@@ -13,6 +15,7 @@ export default class Group extends Component {
         loader: false,
         errorMsg: '',
         successMsg: '',
+        firstLoad: true
     }
     //modal open & close functions
     modalOpen = () => {
@@ -40,25 +43,65 @@ export default class Group extends Component {
         }
     }
 
-
     handleAddGroup = (e) => {
         e.preventDefault();
         if (this.isFormValid(this.state)) {
             this.setState({ loader: true })
             const db = getDatabase();
-            const postListRef = ref(db, 'posts');
-            const newPostRef = push(postListRef);
-            set(newPostRef, {
+            const groupListRef = ref(db, 'groups');
+            const newGroupRef = push(groupListRef);
+           
+            set(newGroupRef, {
+
                 groupName: this.state.groupName,
-                groupType: this.state.groupType
-            });
-            this.setState({ groupName: '' })
-            this.setState({ groupType: '' })
-            alert('Group Added to the server')
+                groupType: this.state.groupType,
+                createdBy: this.props.user.displayName,
+
+            }).then(() => {
+                this.setState({ groupName: '' })
+                this.setState({ groupType: '' })
+                this.setState({ errorMsg: '' })
+                this.setState({ modal: false })
+            })
+
         } else {
             this.setState({ errorMsg: 'Please fill all fields ' })
         }
     }
+    // Load Group Data from RealTime Databse
+    componentDidMount() {
+
+        const db = getDatabase();
+        const starCountRef = ref(db, 'groups/');
+        onValue(starCountRef, (snapshot) => {
+            let groupsAfterLoad = []
+            snapshot.forEach((item) => {
+                let groupData = {
+                    id: item.key,
+                    groupName: item.val().groupName,
+                    groupType: item.val().groupType,
+                    createdBy: item.val().createdBy
+                }
+                groupsAfterLoad.push(groupData)
+            })
+            this.setState({ group: groupsAfterLoad },this.defaultGroupDisplay)
+        });
+    }
+
+    // Default group on First load................................
+    defaultGroupDisplay =()=>{
+        let firstGroup =this.state.group[0];
+        if(this.state.firstLoad && this.state.group.length>0){
+            this.props.setCurrentGroup(firstGroup)
+        }
+        this.setState({firstLoad:false})
+    }
+
+    handleGroup = (group) => {
+        this.props.setCurrentGroup(group)
+
+    }
+
 
     render() {
 
@@ -69,6 +112,14 @@ export default class Group extends Component {
                         Group({this.state.group.length})</span>
                     <Icon onClick={this.modalOpen} style={{ display: 'inline-block', marginLeft: '60px', cursor: 'pointer' }} name='add circle'></Icon>
 
+                    <Menu vertical style={{ marginLeft: '10px' }}>
+                        {this.state.group.map((item) => (
+                            <Menu.Item onClick={() => this.handleGroup(item)}>
+                                {item.groupName}
+                            </Menu.Item>
+                        ))}
+
+                    </Menu>
                 </Header>
 
                 <Modal
@@ -84,11 +135,11 @@ export default class Group extends Component {
                         <Form>
                             <Form.Field>
                                 <label style={{ color: '#fff' }}>Group Name</label>
-                                <input onChange={this.handleChange} className={this.state.errorMsg.includes("Field") ? 'error' : ''} name="groupName" placeholder='Group Name' />
+                                <input onChange={this.handleChange} className={this.state.errorMsg.includes("Field") ? 'error' : ''} name="groupName" placeholder='Group Name' value={this.state.groupName} />
                             </Form.Field>
                             <Form.Field>
                                 <label style={{ color: '#fff' }}>Group Type</label>
-                                <input onChange={this.handleChange} className={this.state.errorMsg.includes("Field") ? 'error' : ''} name="groupType" placeholder='Group Type' />
+                                <input onChange={this.handleChange} className={this.state.errorMsg.includes("Field") ? 'error' : ''} name="groupType" placeholder='Group Type' value={this.state.groupType} />
                             </Form.Field>
                         </Form>
 
@@ -112,3 +163,5 @@ export default class Group extends Component {
         )
     }
 }
+
+export default connect(null, { setCurrentGroup })(Group);

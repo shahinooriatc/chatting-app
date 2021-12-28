@@ -10,7 +10,7 @@ export default class SideBar extends Component {
         return (
             <Grid>
                 <UserPanel  user={this.props.user}/>
-                <Group/>
+                <Group user={this.props.user}/>
             </Grid>
         )
     }

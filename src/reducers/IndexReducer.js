@@ -22,9 +22,27 @@ const user_reducer = (state = initialState, action) => {
     }
 }
 
+
+const initialStateGroup = {
+    setCurrentGroup: null,
+
+}
+const group_reducer = (state = initialStateGroup, action) => {
+    switch (action.type) {
+        case actionType.SET_CURRENT_GROUP:
+            return {
+                ...state,
+                setCurrentGroup: action.payload.currentGroup,
+            }
+        default:
+            return state;
+    }
+}
+
 //After Packing all reducers Named as 'user' in object file then export for App.js //
 const rootReducer = combineReducers({
-    user: user_reducer
+    user: user_reducer,
+    group: group_reducer
 })
 
 export default rootReducer;
