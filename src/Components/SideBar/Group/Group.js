@@ -15,7 +15,8 @@ class Group extends Component {
         loader: false,
         errorMsg: '',
         successMsg: '',
-        firstLoad: true
+        firstLoad: true,
+        menuActive: ''
     }
     //modal open & close functions
     modalOpen = () => {
@@ -50,7 +51,7 @@ class Group extends Component {
             const db = getDatabase();
             const groupListRef = ref(db, 'groups');
             const newGroupRef = push(groupListRef);
-           
+
             set(newGroupRef, {
 
                 groupName: this.state.groupName,
@@ -84,21 +85,24 @@ class Group extends Component {
                 }
                 groupsAfterLoad.push(groupData)
             })
-            this.setState({ group: groupsAfterLoad },this.defaultGroupDisplay)
+            this.setState({ group: groupsAfterLoad }, this.defaultGroupDisplay)
         });
     }
 
     // Default group on First load................................
-    defaultGroupDisplay =()=>{
-        let firstGroup =this.state.group[0];
-        if(this.state.firstLoad && this.state.group.length>0){
+    defaultGroupDisplay = () => {
+        let firstGroup = this.state.group[0];
+        if (this.state.firstLoad && this.state.group.length > 0) {
             this.props.setCurrentGroup(firstGroup)
+            this.setState({ menuActive: firstGroup.id })
         }
-        this.setState({firstLoad:false})
+        this.setState({ firstLoad: false })
     }
 
     handleGroup = (group) => {
+        this.setState({menuActive:group.id})
         this.props.setCurrentGroup(group)
+        
 
     }
 
@@ -112,9 +116,9 @@ class Group extends Component {
                         Group({this.state.group.length})</span>
                     <Icon onClick={this.modalOpen} style={{ display: 'inline-block', marginLeft: '60px', cursor: 'pointer' }} name='add circle'></Icon>
 
-                    <Menu vertical style={{ marginLeft: '10px' }}>
+                    <Menu vertical style={{ marginLeft: '3px' }}>
                         {this.state.group.map((item) => (
-                            <Menu.Item onClick={() => this.handleGroup(item)}>
+                            <Menu.Item onClick={() => this.handleGroup(item)} style={ item.id === this.state.menuActive ? menuLIstActive : menuList }>
                                 {item.groupName}
                             </Menu.Item>
                         ))}
@@ -164,4 +168,14 @@ class Group extends Component {
     }
 }
 
+
+let menuList = {
+    color: "#3d4d5d",
+    backgroundColor: '#FFFFFF',
+}
+let menuLIstActive = {
+    fontWeight:600,
+    color: '#FFF',
+    backgroundColor: '#3d4d5d'
+}
 export default connect(null, { setCurrentGroup })(Group);

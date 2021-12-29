@@ -12,7 +12,7 @@ import Messages from './../Messages/Messages';
 class Home extends Component {
     componentDidMount() {
         onAuthStateChanged(auth, (user) => {
-            
+
             if (user) {
                 this.props.setUser(user)
             } else {
@@ -21,7 +21,7 @@ class Home extends Component {
         });
     }
     render() {
-        
+
         return (this.props.isLoading ?
             (<Segment style={{ height: '100vh' }}>
                 <Dimmer active>
@@ -31,19 +31,20 @@ class Home extends Component {
             </Segment>)
             :
             (<Grid columns={4} style={{ height: '100vh' }} divided>
-                <Grid.Column width={2} style={{ backgroundColor: '#64A5D3' }}>
-                    <SideBar user={this.props.userName} />
+
+                <Grid.Column width={1} style={{ backgroundColor: '#6276B5' }}>
+                    <ColorPlate />
                 </Grid.Column>
 
-                <Grid.Column width={2} style={{ backgroundColor: '#6276B5' }}>
-                    <ColorPlate />
+                <Grid.Column width={2} style={{ backgroundColor: '#64A5D3' }}>
+                    <SideBar user={this.props.userName} />
                 </Grid.Column>
 
                 <Grid.Column width={9} style={{ backgroundColor: '#D9EDF9' }}>
                     <Messages />
                 </Grid.Column>
 
-                <Grid.Column width={3} style={{ backgroundColor: '#B3F5FF' }}>
+                <Grid.Column width={4} style={{ backgroundColor: '#B3F5FF' }}>
                     <MetaPanel />
                 </Grid.Column>
 
