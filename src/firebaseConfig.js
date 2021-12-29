@@ -9,12 +9,7 @@ import { getDatabase, set, ref, push ,onValue} from "firebase/database";
 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBZxbPtcV4ZM8kjvYqLHDhel-usqPjyUAk",
-    authDomain: "first-chatting-app-dee38.firebaseapp.com",
-    projectId: "first-chatting-app-dee38",
-    storageBucket: "first-chatting-app-dee38.appspot.com",
-    messagingSenderId: "915015279563",
-    appId: "1:915015279563:web:ab065f323a3bf5ab478c4e"
+//    here paste your firebase configuration file....
 };
 
 // Initialize Firebase
